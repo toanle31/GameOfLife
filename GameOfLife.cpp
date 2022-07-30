@@ -1,20 +1,55 @@
-// GameOfLife.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// Conway's Game Of Life implementation.
 
 #include <iostream>
+#include <string>
+#include <cstdint>
+#include <sstream>
+
+#define NUM_SIM_CYCLES 10
+
+struct Cell
+{
+    int64_t x;
+    int64_t y;
+    bool IsAlive;
+    int8_t AliveNeighborCount;
+
+    Cell() { x = 0; y = 0; IsAlive = false; AliveNeighborCount = 0; }
+};
+
+void ParseLine(const std::string& Line, Cell* Cell);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    // Reading from stdin EOF character needs to be generated with CTRL+Z to break the while loop
+    std::string Line;
+    std::cout << "Paste in input then press Enter."
+        << std::endl << "To run simulation press CTRL+Z then Enter: " << std::endl;
+    while (std::getline(std::cin, Line))
+    {
+        Cell* ptr = new Cell();
+        ptr->IsAlive = true;
+        ParseLine(Line, ptr);
+        // update neighbor's alive counts
+    }
+
+    // Simulate
+    for (int i = 0; i < NUM_SIM_CYCLES; i++)
+    {
+
+    }
+
+    // Output to stdout
+    return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+/**
+ * Parse input to get position of initial alive cells
+ */
+void ParseLine(const std::string& Line, Cell* InCell)
+{
+    std::istringstream iss(Line);
+    char Delim;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    iss >> Delim >> InCell->x >> Delim >> InCell->y >> Delim;
+}
